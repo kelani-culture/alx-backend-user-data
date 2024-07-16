@@ -39,11 +39,10 @@ class DB:
         # self._session.refresh(user)
         return user
 
-    def find_user_by(self, **kwargs):
+    def find_user_by(self, **kwargs) -> User:
         """
         find a user by a given field
         """
-        user = None
         try:
             user = self._session.query(User).filter_by(**kwargs).one()
         except NoResultFound:
