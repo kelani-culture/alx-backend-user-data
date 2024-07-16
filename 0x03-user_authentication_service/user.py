@@ -8,6 +8,9 @@ from sqlalchemy import Column, String, Integer
 Base = declarative_base()
 
 class User(Base):
+    """
+    User model table object oriented
+    """
     __tablename__ = 'users'
     id: int = Column(Integer, nullable=False, autoincrement=True, primary_key=True)
     email: str = Column(String(250), nullable=False)
