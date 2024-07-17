@@ -2,7 +2,7 @@
 """
 a simple flask app authentication
 """
-from flask import Flask, Response, abort, jsonify, request
+from flask import Flask, Response, abort, jsonify, redirect, request
 
 from auth import Auth
 
@@ -52,6 +52,20 @@ def login():
     if user_session:
         resp.set_cookie("session_id", user_session)
     return resp
+
+
+@app.route("/sessions", methods=["DELETE"])
+def logout():
+    """logout user and rediret back to homepage"""
+    session_id = request.cookies.get("session_id")
+    if not session_id:
+        return jsonify({}), 403
+
+    user = AUTH.get_user_from_session_id(session_id)
+    if not user:
+        return jsonify({}), 403
+    AUTH.destroy_session(user_id=user.id)
+    return redirect("/")
 
 
 if __name__ == "__main__":
