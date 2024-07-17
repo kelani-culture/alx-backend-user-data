@@ -59,14 +59,26 @@ def logout():
     """logout user and rediret back to homepage"""
     session_id = request.cookies.get("session_id")
     if not session_id:
-        return jsonify({}), 403
+        return abort(403)
 
     user = AUTH.get_user_from_session_id(session_id)
     if not user:
-        return jsonify({}), 403
+        return abort(403)
+
     AUTH.destroy_session(user_id=user.id)
     return redirect("/")
 
 
+@app.route('/profile', methods=["GET"])
+def profile():
+    session_id = request.cookies.get("session_id")
+    if not session_id:
+        return abort(403)
+
+    user = AUTH.get_user_from_session_id(session_id)
+    if not user:
+        return abort(403)
+
+    return jsonify({"email": user.email}), 200
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
