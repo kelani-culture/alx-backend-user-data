@@ -54,7 +54,7 @@ class Auth:
         try:
             user = self._db.find_user_by(email=email)
             if user:
-                session_id = str(_generate_uuid())
+                session_id = str(__generate_uuid())
                 self._db.update_user(user.id, session_id=session_id)
         except NoResultFound:
             return
@@ -67,7 +67,7 @@ class Auth:
         find users by the provided session id
         """
         try:
-           return self._db.find_user_by(session_id=session_id)
+            return self._db.find_user_by(session_id=session_id)
         except NoResultFound:
             return None
 
@@ -80,7 +80,6 @@ class Auth:
         except ValueError:
             return
         return
-            
 
 
 def _hash_password(password: str) -> bytes:
@@ -91,7 +90,7 @@ def _hash_password(password: str) -> bytes:
     return hashpw(password.encode(), salt=salts)
 
 
-def _generate_uuid() -> uuid.UUID:
+def __generate_uuid() -> uuid.UUID:
     """
     generate a uuid value
     """

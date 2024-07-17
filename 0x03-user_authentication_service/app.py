@@ -2,7 +2,7 @@
 """
 a simple flask app authentication
 """
-from flask import Flask, abort, jsonify, request, Response
+from flask import Flask, Response, abort, jsonify, request
 
 from auth import Auth
 
@@ -42,7 +42,7 @@ def login():
     email = request.form.get("email")
     password = request.form.get("password")
     if not email or not password:
-        return (abort(422))
+        return abort(422)
 
     user_cred = AUTH.valid_login(email, password)
     if not user_cred:
