@@ -25,15 +25,11 @@ def register_user():
     regist user to the application
     """
     try:
-        if request.headers.get('content_type') == "application/json":
-            email = request.json.get("email")
-            password = request.json.get("password")
-        else:
-            email = request.form.get('email')
-            password = request.form.get('password')
+        email = request.form.get("email")
+        password = request.form.get("password")
         AUTH.register_user(email=email, password=password)
     except ValueError:
-        return jsonify(message="email already registered"), 400
+        return jsonify({"message": "email already registered"}), 400
 
     return jsonify({"email": email, "message": "user created"})
 
