@@ -7,9 +7,13 @@ from flask import Flask, jsonify
 app = Flask(__file__)
 
 
-@app.route('/', methods=['GET'])
+@app.route("/", methods=["GET"])
 def welcome():
+    """
+    welcome page i guess
+    """
     return jsonify(message="Bienvenue")
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
