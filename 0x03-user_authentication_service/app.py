@@ -2,7 +2,8 @@
 """
 a simple flask app authentication
 """
-from flask import Flask, Response, abort, jsonify, redirect, request
+from flask import Flask, abort, jsonify, redirect, request
+from sqlalchemy.orm.exc import NoResultFound
 
 from auth import Auth
 
@@ -81,6 +82,20 @@ def profile():
         return abort(403)
 
     return jsonify({"email": user.email}), 200
+
+
+@app.route("/reset_password", methods=["POST"])
+def get_reset_password_token():
+    email = request.form.get("email")
+    user_reset_token = ""
+    if not email:
+        return abort(422)
+    try:
+        user_reset_token = AUTH.get_reset_password_token(email=email)
+    except ValueError:
+        return abort(403)
+
+    return jsonify({"email": email, "reset_token": user_reset_token}), 200
 
 
 if __name__ == "__main__":

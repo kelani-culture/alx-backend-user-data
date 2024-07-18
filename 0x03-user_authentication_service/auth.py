@@ -85,7 +85,7 @@ class Auth:
         """
         use too get a reset password user token for user
         """
-        reset_token = ''
+        reset_token = ""
         try:
             user = self._db.find_user_by(email=email)
             if not user:
