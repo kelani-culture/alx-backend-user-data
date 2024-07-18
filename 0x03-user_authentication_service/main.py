@@ -48,7 +48,7 @@ def log_in(email: str, password: str) -> str:
     )
     assert resp.status_code == 200
     assert resp.json() == {"email": email, "message": "logged in"}
-    resp_session = resp.cookies.get('session_id') or ''
+    resp_session = resp.cookies.get("session_id") or ""
     return resp_session
 
 
@@ -57,7 +57,7 @@ def profile_logged(session_id: str):
     cookie = {"session_id": session_id}
     resp = requests.get(f"{BASE_URL}/profile", cookies=cookie)
     assert resp.status_code == 200
-    assert resp.json() == {'email': EMAIL}
+    assert resp.json() == {"email": EMAIL}
 
 
 def log_out(session_id: str):
@@ -67,17 +67,22 @@ def log_out(session_id: str):
     assert resp.status_code == 200
     assert resp.json() == {"message": "Bienvenue"}
 
+
 def reset_password_token(email: str) -> str:
     """get user password reset token"""
-    resp = requests.post(f'{BASE_URL}/reset_password', data={'email': email})
+    resp = requests.post(f"{BASE_URL}/reset_password", data={"email": email})
     assert resp.status_code == 200
-    assert all(key in resp.json() for key in ['email', 'reset_token'])
-    return resp.json()['reset_token']
+    assert all(key in resp.json() for key in ["email", "reset_token"])
+    return resp.json()["reset_token"]
 
 
 def update_password(email: str, reset_token: str, new_password: str):
     """update user password"""
-    data = {'email': email, 'reset_token': reset_token, 'new_password': new_password}
+    data = {
+        "email": email,
+        "reset_token": reset_token,
+        "new_password": new_password,
+    }
     resp = requests.put(f"{BASE_URL}/reset_password", data=data)
     assert resp.status_code == 200
     assert resp.json() == {"email": email, "message": "Password updated"}
