@@ -7,8 +7,8 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from auth import Auth
 
-app = Flask(__file__)
-
+app = Flask(__name__)
+app.url_map.strict_slashes = False
 AUTH = Auth()
 
 
@@ -86,6 +86,7 @@ def profile():
 
 @app.route("/reset_password", methods=["POST"])
 def get_reset_password_token():
+    """ get user password token """
     email = request.form.get("email")
     user_reset_token = ""
     if not email:
@@ -94,7 +95,6 @@ def get_reset_password_token():
         user_reset_token = AUTH.get_reset_password_token(email=email)
     except ValueError:
         return abort(403)
-
     return jsonify({"email": email, "reset_token": user_reset_token}), 200
 
 
