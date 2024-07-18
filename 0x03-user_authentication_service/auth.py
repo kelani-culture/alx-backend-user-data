@@ -1,17 +1,30 @@
 #!/usr/bin/env python3
+"""
+handle user authorization into application
+"""
 import uuid
 from typing import Optional
 
 from bcrypt import checkpw, gensalt, hashpw
 from sqlalchemy.orm.exc import NoResultFound
 
+from db import DB
 from user import User
 
-"""
-handle user authorization into application
-"""
 
-from db import DB
+def _hash_password(password: str) -> bytes:
+    """
+    hash user given password
+    """
+    salts = gensalt()
+    return hashpw(password.encode(), salt=salts)
+
+
+def _generate_uuid() -> str:
+    """
+    returns a generated  uuid4 value
+    """
+    return str(uuid.uuid4())
 
 
 class Auth:
@@ -108,18 +121,3 @@ class Auth:
         self._db.update_user(
             user.id, hashed_password=hashed_password, reset_token=None
         )
-
-
-def _hash_password(password: str) -> bytes:
-    """
-    hash user given password
-    """
-    salts = gensalt()
-    return hashpw(password.encode(), salt=salts)
-
-
-def _generate_uuid() -> str:
-    """
-    returns a generated  uuid4 value
-    """
-    return str(uuid.uuid4())
