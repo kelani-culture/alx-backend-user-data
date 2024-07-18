@@ -3,7 +3,6 @@
 end to end user testing of endpoints 
 """
 import requests
-import requests.cookies
 
 from auth import Auth
 
